@@ -17,8 +17,26 @@ function playGame(computerChoice,userChoice){           // rock beats scissors, 
         } else return (`Sorry you lost! ${computerChoice} beats ${userChoice}.`);
 
 }
-
+function startGame(score){
 let computerChoice = getComputerChoice();
 let userChoice = getUserChoice();
-let result = playGame(computerChoice,userChoice);
-console.log(result);
+let result;
+    result=playGame(computerChoice,userChoice,score);
+    if(result.includes("You Win!")){
+        score++;
+    } else if(result.includes("Sorry")){
+        score--;
+    } else {
+        score+=0;
+    }
+    console.log(result+ " | Score: "+score);
+    return score;
+}
+
+let score=0;
+for(let i =0; i<6;i++){
+    score = startGame(score);
+}
+if(score>2) console.log(`You win after 5 rounds with a score of ${score}.`);
+else console.log(`You lost after 5 rounds with a score of ${score}.`);
+
