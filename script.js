@@ -1,42 +1,111 @@
-function getComputerChoice(){
-    const choices = ['rock', 'paper', 'scissors'];
-    let randomIndex = Math.floor(Math.random()*3);  //generates random number between 0,1 and 2
-    return choices[randomIndex];
-}
+let roundsPlayed = 0;
+let score =0;
+// Start the first round
+playRound();
 
-function getUserChoice(){
-    let choice = prompt("Enter Your Choice", "");
-    return choice.toLowerCase();
-}
+function playRound() {
+    // Increment roundsPlayed counter
+    roundsPlayed++;
 
-function playGame(computerChoice,userChoice){           // rock beats scissors, paper beats rock, scissors beat paper
-        if(computerChoice==userChoice){
-            return(`It's a tie!, both of us chose ${computerChoice}`);
-        } else if ((userChoice=='rock' && computerChoice=='scissors') || (userChoice=='paper' && computerChoice == 'rock') || (userChoice=='scissors' && computerChoice =='paper')){
-            return(`You Win! ${userChoice} beats ${computerChoice}`);
-        } else return (`Sorry you lost! ${computerChoice} beats ${userChoice}.`);
-
-}
-function startGame(score){
-let computerChoice = getComputerChoice();
-let userChoice = getUserChoice();
-let result;
-    result=playGame(computerChoice,userChoice,score);
-    if(result.includes("You Win!")){
-        score++;
-    } else if(result.includes("Sorry")){
-        score--;
-    } else {
-        score+=0;
+    // If roundsPlayed exceeds 5, stop the game
+    if (roundsPlayed > 5) {
+        console.log("Game Over");
+        if(score>2){
+            alert("You Won! Reload to play again");
+        } else{
+            alert("You Lost! Reload to play again");
+        }
+        return;
     }
-    console.log(result+ " | Score: "+score);
-    return score;
+
+    // Get CPU choice
+    let cpuChoice = getCpuChoice();
+    let userChoice;
+    
+    // Get user choice
+    getUserChoice().then(function(choice){
+        userChoice = choice; //rock beats scissors, paper beats rock, scissors beat paper
+        let result = decideWinner(userChoice,cpuChoice,score);
+        if(result.includes("win")){
+            score++;
+        } else if(result.includes("tie")){
+            score+=0;
+        } else {
+            score--;
+        }
+        const currScore = document.querySelector('#scoreBoard');
+        currScore.textContent = `Current Score: ${score}`;
+        console.log(roundsPlayed,result,score);
+        playRound();
+    });
+
+
 }
 
-let score=0;
-for(let i =0; i<6;i++){
-    score = startGame(score);
+// Randomly selects CPU's choice
+function getCpuChoice() {
+    const choices = ['rock', 'paper', 'scissors'];
+    let num = Math.floor(Math.random()*3);
+    return choices[num];
 }
-if(score>2) console.log(`You win after 5 rounds with a score of ${score}.`);
-else console.log(`You lost after 5 rounds with a score of ${score}.`);
+
+// Prompts user for choice
+function getUserChoice() {
+    return new Promise(function(resolve, reject) {
+        const rock = document.querySelector('#rock');
+        const paper = document.querySelector('#paper');
+        const scissors = document.querySelector('#scissors');
+
+        rock.addEventListener('click', function(){
+            resolve('rock');
+        });
+
+        paper.addEventListener('click', function(){
+            resolve('paper');
+        });
+
+        scissors.addEventListener('click', function(){
+            resolve('scissors');
+        });
+    });
+}
+
+// Event listener to play audio when images are clicked
+const images = document.querySelectorAll('#rock, #paper, #scissors');
+images.forEach(images=>{
+    images.addEventListener('click', playAudio);
+});
+
+function playAudio(event){
+    const audio = document.querySelector('#audio');
+    audio.play();
+    const clickedImage = event.target;
+        clickedImage.classList.add('shake');
+
+        // Remove shake class after 500ms
+        setTimeout(function() {
+            clickedImage.classList.remove('shake');
+        }, 500);
+    
+}
+
+function decideWinner(userChoice,cpuChoice,score){
+
+    if((userChoice=='rock'&&cpuChoice=='scissors') || (userChoice=='paper'&&cpuChoice=='rock') || (userChoice=='scissors')&&(cpuChoice=='paper')){
+        const dialog = document.querySelector('#result');
+        dialog.textContent = `CPU Chose:${cpuChoice}, You Chose:${userChoice} | ${userChoice} beats ${cpuChoice}`;
+        return 'win';
+    }
+    else if(userChoice==cpuChoice){
+        const dialog = document.querySelector('#result');
+        dialog.textContent = "It's a tie!";
+        return 'tie';
+    }
+    else {
+        const dialog = document.querySelector('#result');
+        dialog.textContent = `CPU Chose:${cpuChoice}, You Chose:${userChoice} | ${cpuChoice} beats ${userChoice}`;
+        return 'loss';
+    }
+}
+
 

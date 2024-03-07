@@ -5,19 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rock Paper Scissors Project</title>
     <link rel="stylesheet" href="./styles.css" type="text/css">
+    <script src="./script.js" defer></script>
 </head>
 <body>
     <div id="root">
         <h1 class="header">Rock Paper Scissors</h1>
-        <h3 id="scoreBoard">Current Score: </h3>
         <div id="playArea">
-            <p>Choose one to get started!</p>
+            <p id="direction">Score more than 2 pts to win!</p>
             <div id="playerChoice">
                 <img id="rock" src="./assets/rock-removebg-preview.png" alt="rock" width="200px">
-                <img id="rock" src="./assets/paper-removebg-preview.png" alt="paper" width="200px">
-                <img id="rock" src="./assets/scissors-removebg-preview.png" alt="Scissors" width="200px">
+                <img id="paper" src="./assets/paper-removebg-preview.png" alt="paper" width="200px">
+                <img id="scissors" src="./assets/scissors-removebg-preview.png" alt="Scissors" width="200px">
+                <audio id="audio" src="./assets/Mouse Click-SOUND EFFECT.mp3"></audio>
             </div>
         </div>
+        <h3 id="scoreBoard">Current Score: 0</h3>
+        <div id="result"></div>
     </div>
     </body>
 </html>
