@@ -7,11 +7,17 @@
     <link rel="stylesheet" href="./styles.css" type="text/css">
 </head>
 <body>
-    <div class="container">
-    <h1 class="heading">Rock Paper Scissors Game</h1>
-    <p>Use the console to play the game</p>
-    <img src="./assets/4x (8).webp" alt="jessieStare" height="200px" width="auto">
+    <div id="root">
+        <h1 class="header">Rock Paper Scissors</h1>
+        <h3 id="scoreBoard">Current Score: </h3>
+        <div id="playArea">
+            <p>Choose one to get started!</p>
+            <div id="playerChoice">
+                <img id="rock" src="./assets/rock-removebg-preview.png" alt="rock" width="200px">
+                <img id="rock" src="./assets/paper-removebg-preview.png" alt="paper" width="200px">
+                <img id="rock" src="./assets/scissors-removebg-preview.png" alt="Scissors" width="200px">
+            </div>
+        </div>
     </div>
-    <script src="./script.js"></script>
-</body>
+    </body>
 </html>
